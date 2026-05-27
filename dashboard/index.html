@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Yaniv Money Machine — Control Tower</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="dot live"></span>
+    <h1>Yaniv Money Machine</h1>
+    <span class="subtitle">Control Tower — Paper Account</span>
+  </div>
+  <div class="account-strip">
+    <div class="stat">
+      <span class="label">Equity</span>
+      <span class="value" id="equity">—</span>
+    </div>
+    <div class="stat">
+      <span class="label">Buying Power</span>
+      <span class="value" id="bp">—</span>
+    </div>
+    <div class="stat">
+      <span class="label">Broker</span>
+      <span class="value" id="broker">—</span>
+    </div>
+    <div class="stat">
+      <span class="label">Live Trading</span>
+      <span class="value" id="live">—</span>
+    </div>
+    <div class="stat">
+      <span class="label">Phase</span>
+      <span class="value" id="phase">—</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="card wide">
+    <h2>Build Progress</h2>
+    <ol id="progress" class="progress"></ol>
+    <p class="next-action" id="nextAction"></p>
+  </section>
+
+  <section class="card">
+    <h2>Strategies</h2>
+    <div id="strategies" class="empty">— ממתינים לרעיונות —</div>
+  </section>
+
+  <section class="card">
+    <h2>Open Positions</h2>
+    <div id="positions" class="empty">— אין פוזיציות פתוחות —</div>
+  </section>
+
+  <section class="card">
+    <h2>Dream Scans (Nightly)</h2>
+    <div id="dreams" class="empty">— טרם הופעל —</div>
+  </section>
+
+  <section class="card">
+    <h2>Backtests</h2>
+    <div id="backtests" class="empty">— אין הרצות —</div>
+  </section>
+
+  <section class="card wide">
+    <h2>Event Log</h2>
+    <ul id="log" class="log"></ul>
+  </section>
+</main>
+
+<footer>
+  <span id="updated">—</span>
+  <span class="muted">Built on branch <code>claude/algo-trading-system-t3MC0</code></span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
