@@ -1,0 +1,250 @@
+{
+  "version": 1,
+  "updated_at": "2026-05-27T20:30:00Z",
+  "description": "AI analyst personas — each is a structured prompt template the orchestrator can fire with concrete inputs.",
+  "personas": [
+    {
+      "id": "goldman_screener",
+      "team": "research",
+      "firm": "Goldman Sachs",
+      "title": "Stock Screener",
+      "tagline": "Top-10 picks with PE, growth, debt, moat, targets, risk rating.",
+      "color": "#f5d77a",
+      "inputs": ["risk_tolerance", "amount_usd", "horizon", "sectors"],
+      "output": "Equity research screening report + summary table",
+      "schedule": "weekly"
+    },
+    {
+      "id": "morgan_stanley_dcf",
+      "team": "research",
+      "firm": "Morgan Stanley",
+      "title": "DCF Valuation",
+      "tagline": "5yr revenue / WACC / terminal value / sensitivity / verdict.",
+      "color": "#86c5ff",
+      "inputs": ["ticker", "company_name"],
+      "output": "IB valuation memo with tables & math",
+      "schedule": "on_demand"
+    },
+    {
+      "id": "bridgewater_risk",
+      "team": "risk",
+      "firm": "Bridgewater",
+      "title": "Risk Assessment",
+      "tagline": "Correlation, concentration, tail-risk, hedging, rebalancing.",
+      "color": "#ff8484",
+      "inputs": ["holdings", "total_value"],
+      "output": "Risk report with heatmap summary",
+      "schedule": "weekly"
+    },
+    {
+      "id": "jpm_earnings",
+      "team": "research",
+      "firm": "JPMorgan",
+      "title": "Earnings Analyzer",
+      "tagline": "Beat/miss history, consensus, implied move, bull/bear cases.",
+      "color": "#c8a2ff",
+      "inputs": ["company_name", "earnings_date"],
+      "output": "Pre-earnings brief with buy/sell/wait verdict",
+      "schedule": "event"
+    },
+    {
+      "id": "blackrock_portfolio",
+      "team": "portfolio",
+      "firm": "BlackRock",
+      "title": "Portfolio Builder",
+      "tagline": "Allocation, core/satellite, ETF picks, drawdown, tax, IPS.",
+      "color": "#5cf2a0",
+      "inputs": ["age", "income", "savings", "goals", "risk", "account_type"],
+      "output": "Investment policy document with allocation pie",
+      "schedule": "on_demand"
+    },
+    {
+      "id": "citadel_technical",
+      "team": "execution",
+      "firm": "Citadel",
+      "title": "Technical Analysis",
+      "tagline": "Trend, S/R, MAs, RSI/MACD/BB, patterns, entry/SL/TP.",
+      "color": "#6aa8ff",
+      "inputs": ["ticker", "current_position"],
+      "output": "TA report card with trade plan summary",
+      "schedule": "daily"
+    },
+    {
+      "id": "harvard_dividend",
+      "team": "portfolio",
+      "firm": "Harvard Endowment",
+      "title": "Dividend Strategy",
+      "tagline": "15-20 picks, safety score, payout ratio, DRIP compounding.",
+      "color": "#a3f5b8",
+      "inputs": ["investment_amount", "monthly_income_goal", "account_type", "tax_bracket"],
+      "output": "Dividend portfolio blueprint with income table",
+      "schedule": "monthly"
+    },
+    {
+      "id": "bain_competitive",
+      "team": "research",
+      "firm": "Bain & Company",
+      "title": "Competitive Analysis",
+      "tagline": "5-7 competitors, moats, market share, SWOT, top pick.",
+      "color": "#ffb259",
+      "inputs": ["sector"],
+      "output": "Competitive strategy deck summary with tables",
+      "schedule": "weekly"
+    },
+    {
+      "id": "renaissance_patterns",
+      "team": "quant",
+      "firm": "Renaissance Technologies",
+      "title": "Pattern Finder",
+      "tagline": "Seasonal, day-of-week, insider, options, earnings reaction.",
+      "color": "#7ee8e8",
+      "inputs": ["ticker", "time_period"],
+      "output": "Quant research memo with stat-edge summary",
+      "schedule": "weekly"
+    },
+    {
+      "id": "mckinsey_macro",
+      "team": "macro",
+      "firm": "McKinsey Global",
+      "title": "Macro Impact Report",
+      "tagline": "Rates, inflation, GDP, USD, Fed, geopolitics, rotation.",
+      "color": "#ffcc66",
+      "inputs": ["holdings", "biggest_concern"],
+      "output": "Executive macro strategy briefing",
+      "schedule": "weekly"
+    },
+
+    {
+      "id": "quant_strategy_gen",
+      "team": "quant_lab",
+      "firm": "Quant Lab",
+      "title": "Strategy Generation",
+      "tagline": "3 profitable strategies w/ indicators, entry/exit, SL/TP, edge.",
+      "color": "#5cf2a0",
+      "inputs": ["market", "timeframe", "capital", "risk_per_trade"],
+      "output": "3 strategy cards ready for backtest",
+      "schedule": "weekly"
+    },
+    {
+      "id": "quant_backtest",
+      "team": "quant_lab",
+      "firm": "Quant Lab",
+      "title": "Backtester",
+      "tagline": "5-10 yr CAGR, Sharpe, max DD, win-rate, regime sensitivity.",
+      "color": "#5cf2a0",
+      "inputs": ["strategy_rules"],
+      "output": "Backtest report card",
+      "schedule": "on_demand"
+    },
+    {
+      "id": "quant_risk_reward",
+      "team": "quant_lab",
+      "firm": "Quant Lab",
+      "title": "Risk/Reward Analysis",
+      "tagline": "Per-trade risk, R:R, drawdowns + improvements.",
+      "color": "#5cf2a0",
+      "inputs": ["strategy"],
+      "output": "Risk/reward review with 3 fixes + 2 enhancers",
+      "schedule": "on_demand"
+    },
+    {
+      "id": "quant_regime",
+      "team": "quant_lab",
+      "firm": "Quant Lab",
+      "title": "Market Regime Detection",
+      "tagline": "Trend / volatility / volume; best strategy + what to avoid.",
+      "color": "#7ee8e8",
+      "inputs": ["asset"],
+      "output": "Regime call + go/no-go for each strategy family",
+      "schedule": "daily"
+    },
+    {
+      "id": "quant_multifactor",
+      "team": "quant_lab",
+      "firm": "Quant Lab",
+      "title": "Multi-Factor Strategy",
+      "tagline": "Momentum + Value + Volatility + Trend with weights.",
+      "color": "#5cf2a0",
+      "inputs": ["universe", "rebalance_frequency"],
+      "output": "Factor formulas + weights + example portfolio",
+      "schedule": "monthly"
+    },
+    {
+      "id": "quant_optimize",
+      "team": "quant_lab",
+      "firm": "Quant Lab",
+      "title": "Strategy Optimization",
+      "tagline": "Tune for Sharpe + DD; before/after comparison.",
+      "color": "#7ee8e8",
+      "inputs": ["strategy_rules", "goals"],
+      "output": "Optimized strategy version with diff",
+      "schedule": "weekly"
+    },
+    {
+      "id": "quant_portfolio",
+      "team": "quant_lab",
+      "firm": "Quant Lab",
+      "title": "Portfolio Construction",
+      "tagline": "Allocation %, expected return, volatility, drawdown.",
+      "color": "#5cf2a0",
+      "inputs": ["assets", "risk_tolerance", "horizon"],
+      "output": "Portfolio table with reasoning per asset",
+      "schedule": "on_demand"
+    },
+    {
+      "id": "quant_setups",
+      "team": "quant_lab",
+      "firm": "Quant Lab",
+      "title": "Trade Setup Generation",
+      "tagline": "3 high-probability trades: entry/SL/TP/RR/reasoning.",
+      "color": "#7ee8e8",
+      "inputs": ["market"],
+      "output": "3 trade cards ready for risk review",
+      "schedule": "daily"
+    },
+    {
+      "id": "quant_montecarlo",
+      "team": "quant_lab",
+      "firm": "Quant Lab",
+      "title": "Monte Carlo Simulation",
+      "tagline": "Probability of loss, return distribution, worst-case.",
+      "color": "#5cf2a0",
+      "inputs": ["strategy"],
+      "output": "Robustness verdict (robust vs fragile)",
+      "schedule": "on_demand"
+    },
+    {
+      "id": "quant_drawdown",
+      "team": "quant_lab",
+      "firm": "Quant Lab",
+      "title": "Drawdown Analysis",
+      "tagline": "Max DD, recovery time, 3 ways to reduce.",
+      "color": "#7ee8e8",
+      "inputs": ["strategy"],
+      "output": "DD report with sizing fixes",
+      "schedule": "on_demand"
+    },
+    {
+      "id": "quant_macro_strategy",
+      "team": "quant_lab",
+      "firm": "Quant Lab",
+      "title": "Macro-Based Strategy",
+      "tagline": "Rates/inflation/growth-driven entry/exit signals.",
+      "color": "#ffcc66",
+      "inputs": ["regime"],
+      "output": "Macro playbook with example trades",
+      "schedule": "weekly"
+    },
+    {
+      "id": "quant_alpha",
+      "team": "quant_lab",
+      "firm": "Quant Lab",
+      "title": "Alpha / Edge Detection",
+      "tagline": "Behavioral inefficiencies + market-structure gaps.",
+      "color": "#5cf2a0",
+      "inputs": ["market"],
+      "output": "2 unique strategies + execution steps",
+      "schedule": "weekly"
+    }
+  ]
+}

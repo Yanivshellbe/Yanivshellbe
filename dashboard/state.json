@@ -1,35 +1,39 @@
 {
-  "version": "0.1.0",
-  "updated_at": "2026-05-27T20:05:00Z",
-  "phase": "0 — Foundation",
-  "system_status": "Bootstrapping",
+  "version": "0.2.0",
+  "updated_at": "2026-05-27T20:30:00Z",
+  "phase": "1 — Ideas absorbed",
+  "system_status": "Designing",
   "account": {
     "broker": "Alpaca Paper",
     "starting_equity_usd": 100000,
     "current_equity_usd": 100000,
     "buying_power_usd": 400000,
-    "dtbp_status": "PDT",
+    "dtbp_status": "PDT · 4× DTBP",
     "live_trading_enabled": false
   },
   "build_progress": [
     { "id": 0, "title": "Visual foundation + dashboard", "status": "done" },
-    { "id": 1, "title": "Ingest user ideas", "status": "waiting_user" },
-    { "id": 2, "title": "Red-team & repair each idea", "status": "pending" },
-    { "id": 3, "title": "Alpaca API wiring", "status": "pending" },
-    { "id": 4, "title": "Strategy engine + weekly ranking", "status": "pending" },
-    { "id": 5, "title": "Backtesting runner", "status": "pending" },
-    { "id": 6, "title": "Nightly Dream Scan", "status": "pending" },
-    { "id": 7, "title": "Paper-live execution", "status": "pending" }
+    { "id": 1, "title": "Ingest user ideas (22 prompts + 8 ideas)", "status": "done" },
+    { "id": 2, "title": "Red-team every idea", "status": "done" },
+    { "id": 3, "title": "Analyst persona library", "status": "done" },
+    { "id": 4, "title": "Python backend skeleton", "status": "in_progress" },
+    { "id": 5, "title": "Alpaca API wiring (waiting keys)", "status": "waiting_user" },
+    { "id": 6, "title": "Strategy engine + weekly ranking", "status": "pending" },
+    { "id": 7, "title": "Backtesting runner", "status": "pending" },
+    { "id": 8, "title": "Nightly Dream Scan scheduler", "status": "pending" },
+    { "id": 9, "title": "Paper-live execution + circuit breakers", "status": "pending" }
   ],
   "strategies": [],
   "open_positions": [],
   "dream_scans": [],
   "backtests": [],
-  "next_action": "Awaiting user's idea list — message #2.",
+  "next_action": "User to provide Alpaca paper API key + secret (env vars ALPACA_KEY / ALPACA_SECRET) so the orchestrator can pull account data and start real Citadel TA + RenTech pattern runs.",
   "log": [
     { "ts": "2026-05-27T20:05:00Z", "msg": "Branch created: claude/algo-trading-system-t3MC0" },
-    { "ts": "2026-05-27T20:05:00Z", "msg": "Repo skeleton scaffolded." },
-    { "ts": "2026-05-27T20:05:00Z", "msg": "Dashboard online (read-only)." },
-    { "ts": "2026-05-27T20:05:00Z", "msg": "Waiting for idea inputs from user." }
+    { "ts": "2026-05-27T20:05:00Z", "msg": "Dashboard online (v0.1)." },
+    { "ts": "2026-05-27T20:20:00Z", "msg": "Ingested 22 analyst personas + 17 idea screenshots." },
+    { "ts": "2026-05-27T20:25:00Z", "msg": "Encoded ideas → /dashboard/data/ideas.json with red-team rationale." },
+    { "ts": "2026-05-27T20:28:00Z", "msg": "Encoded all prompt templates → /dashboard/data/prompts.json." },
+    { "ts": "2026-05-27T20:30:00Z", "msg": "Dashboard v0.2 online — Analyst Room + Idea Book + Strategy Leaderboard." }
   ]
 }

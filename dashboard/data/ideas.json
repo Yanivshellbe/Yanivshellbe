@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "updated_at": "2026-05-27T20:30:00Z",
+  "ideas": [
+    {
+      "id": "polymarket_clob_lag",
+      "title": "Polymarket CLOB-vs-Spot Latency Scalper",
+      "category": "Latency Arb",
+      "summary": "Polymarket UP/DOWN 5MIN contracts repriced ~100ms after BTC spot moves. Buy/sell the contract during the lag window when probability is mathematically stale.",
+      "edge": "Pure mechanical latency — not predicting BTC, exploiting reprice delay.",
+      "expected_per_trade_pct": [0.3, 0.8],
+      "risk_controls": {
+        "per_trade_pct": 0.5,
+        "daily_cap_pct": 2.0,
+        "hard_stop_pct": -0.4
+      },
+      "scale_ceiling": "Liquidity-bound; book depth typically caps a single fill at $5–15k notional.",
+      "decay_window_days": 60,
+      "red_team": [
+        "Polymarket can patch the lag at any time — strategy goes to zero overnight.",
+        "API rate limits + 429 throttling under burst; need exponential backoff and pre-warmed connections.",
+        "US persons + Polymarket regulatory status — verify legality for the trading entity.",
+        "WebSocket disconnect during a streak = stuck inventory; need automatic flatten on disconnect.",
+        "Cross-venue clock skew can fake an edge; require NTP-synced timestamps and reject signals where t_polymarket - t_binance < 50ms.",
+        "Adversarial flow: other bots front-run our fills; need queue-position model."
+      ],
+      "status": "approved_for_paper_research",
+      "owner_module": "strategies/pol_latency.py"
+    },
+    {
+      "id": "trump_butterfly",
+      "title": "Trump / Political Tweet Butterfly Cascade",
+      "category": "News-Driven",
+      "summary": "Stream political accounts (Trump, key Fed members, war-room handles). Classify content (war / tariff / Fed / company-specific). Map to a precomputed asset cascade (e.g., 'war mentioned' → +oil, +gold, +VIX, -SPY, -airlines, +defense).",
+      "edge": "Sub-second reaction to high-signal headlines before retail keyboards move.",
+      "expected_per_event_pct": [0.5, 3.0],
+      "risk_controls": {
+        "max_event_size_pct_equity": 5,
+        "auto_exit_minutes": 30,
+        "min_signal_confidence": 0.75
+      },
+      "scale_ceiling": "Limited by event frequency (a few high-quality signals per week).",
+      "red_team": [
+        "Fake/deepfake tweets / hacked accounts → wrong trade. Verify via secondary source within 500ms or skip.",
+        "Many actors trade these accounts — edge is decaying fast; need <250ms execution.",
+        "Sarcasm/quote-tweets misclassified by LLM → wrong direction. Require ensemble agreement.",
+        "Halted symbols and limit-up/down → unable to flatten. Pre-screen for halt risk.",
+        "Regulatory: trading on someone's tweet is fine; trading on confidential leak isn't. Source must be public.",
+        "Account suspension / API outage. Need multi-source feed (X, Truth Social, news wire)."
+      ],
+      "status": "approved_for_paper_research",
+      "owner_module": "strategies/news_butterfly.py"
+    },
+    {
+      "id": "cross_venue_latency",
+      "title": "Cross-Venue Latency Arbitrage (Equities)",
+      "category": "Latency Arb",
+      "summary": "Same equity priced microseconds apart across IEX/NASDAQ/ARCA. Detect dislocations > tick size + fees and rip the spread.",
+      "edge": "Microstructure dislocation; classic stat-arb if co-located.",
+      "red_team": [
+        "Without colocation we are 10-100ms late — pros eat us alive. Skip unless we add a sponsored access route.",
+        "Alpaca routing doesn't expose venue choice → cannot extract this edge through Alpaca alone.",
+        "Capital intensive; tiny edge per trade, requires huge volume to matter.",
+        "Reg NMS + ISO orders complexity."
+      ],
+      "status": "rejected_for_now",
+      "rejection_reason": "Not feasible via Alpaca retail API. Park unless we get a prime broker."
+    },
+    {
+      "id": "earnings_drift_options",
+      "title": "Earnings Implied-Move Drift",
+      "category": "Event-Driven",
+      "summary": "When implied move >> historical actual move for a name, sell strangles into earnings + delta-hedge. When implied << actual, buy the cheap optionality.",
+      "edge": "Vol risk premium / variance risk premium, well-documented persistent edge.",
+      "red_team": [
+        "Tail-event risk: one earnings can wipe a year of gains. Need strict sizing + wing protection.",
+        "Alpaca options coverage limits (no multi-leg complex spreads in some accounts) — verify.",
+        "Borrow availability for short stock leg if needed.",
+        "Slippage on illiquid options chains."
+      ],
+      "status": "approved_for_paper_research",
+      "owner_module": "strategies/earnings_iv.py"
+    },
+    {
+      "id": "macro_regime_rotation",
+      "title": "Macro Regime Sector Rotation",
+      "category": "Macro",
+      "summary": "Classify regime weekly via FRED + market internals (yields, USD, breadth, VIX term). Long winning sectors / short losing sectors of the current regime.",
+      "edge": "Diversified, low frequency, low blowup risk — the 'safety chassis' of the system.",
+      "red_team": [
+        "Regime detection lag → wrong sector right at the inflection.",
+        "Sector ETF crowding and correlation breakdowns in stress.",
+        "Costs eaten by frequent rebalancing if regime flips often."
+      ],
+      "status": "approved_for_paper_research",
+      "owner_module": "strategies/macro_regime.py"
+    },
+    {
+      "id": "multifactor_long_short",
+      "title": "Multi-Factor Long/Short Equity",
+      "category": "Quant",
+      "summary": "Daily rank S&P 1500 by Momentum + Value + LowVol + Quality + Trend. Long top decile, short bottom decile, beta-neutral, rebalance weekly.",
+      "edge": "Classic factor premia, time-tested. Designed to survive any single-factor failure.",
+      "red_team": [
+        "Crowded trade — factor crashes (e.g., Aug 2007 quant quake).",
+        "Short borrow cost & locate failures on small caps.",
+        "PDT constraint: weekly rebalance keeps us within day-trade limit.",
+        "Survivorship bias in backtest; require point-in-time data."
+      ],
+      "status": "approved_for_paper_research",
+      "owner_module": "strategies/multi_factor.py"
+    },
+    {
+      "id": "vix_term_structure",
+      "title": "VIX Term-Structure Carry",
+      "category": "Vol",
+      "summary": "When VIX futures curve is in contango, short front-month vol via VXX or short calls; when backwardated, flip long. Position-size by realized-vol z-score.",
+      "edge": "Vol risk premium harvest with regime gate.",
+      "red_team": [
+        "Tail blow-up risk (Feb 2018 'volmageddon'). Mandatory hard stop + far-OTM protection.",
+        "Requires options chain depth Alpaca may not support; verify."
+      ],
+      "status": "approved_for_paper_research",
+      "owner_module": "strategies/vix_carry.py"
+    },
+    {
+      "id": "insider_form4_following",
+      "title": "Insider Form 4 / 13D Follow",
+      "category": "Information",
+      "summary": "Parse SEC EDGAR Form 4 cluster-buys and 13D filings within minutes of publication; long names with significant insider purchases above $X notional.",
+      "edge": "Documented insider-cluster-buy alpha 6-12 months out.",
+      "red_team": [
+        "Edge has compressed since 2010s; verify in current data.",
+        "Insider may be a dumb buyer (founder averaging down into bankruptcy).",
+        "Penny-stock noise — filter by min market cap + float."
+      ],
+      "status": "approved_for_paper_research",
+      "owner_module": "strategies/insider_follow.py"
+    }
+  ]
+}
