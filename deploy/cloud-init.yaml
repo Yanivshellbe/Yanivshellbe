@@ -1,0 +1,66 @@
+#cloud-config
+# Money Machine — self-provisioning cloud-init for Hetzner (Ubuntu 24.04).
+# Paste into the "Cloud config" field when creating the server.
+#
+# REQUIREMENTS:
+#   - The GitHub repo must be PUBLIC (or replace the clone URL with a tokenized one).
+#   - Fill the ALPACA_* / ANTHROPIC_* values in the write_files block below before pasting.
+#
+# On first boot this installs deps, clones the repo, builds the venv, writes
+# secrets, installs systemd units, starts nginx + the orchestrator, and enables
+# the nightly dream timer. Dashboard comes up at http://<server-ip>/ after ~3-5 min.
+
+package_update: true
+packages:
+  - python3
+  - python3-venv
+  - python3-pip
+  - git
+  - nginx
+  - ufw
+  - fail2ban
+  - chrony
+  - curl
+
+write_files:
+  - path: /root/mm-secrets.env
+    permissions: '0600'
+    content: |
+      ALPACA_KEY=REPLACE_ME
+      ALPACA_SECRET=REPLACE_ME
+      ALPACA_BASE_URL=https://paper-api.alpaca.markets
+      ANTHROPIC_API_KEY=
+      ANTHROPIC_MODEL=claude-opus-4-7
+      MAX_DAILY_LOSS_PCT=2.0
+      MAX_DRAWDOWN_PCT=8.0
+      MAX_GROSS_LEVERAGE=3.0
+      MAX_POSITION_PCT_EQUITY=10.0
+      MIN_LIQUIDITY_USD=1000000
+      LIVE_TRADING_ENABLED=false
+      DRY_RUN=true
+
+runcmd:
+  - systemctl enable --now chrony
+  - id -u money &>/dev/null || useradd --system --create-home --shell /usr/sbin/nologin money
+  - git clone --branch claude/algo-trading-system-t3MC0 https://github.com/yanivshellbe/yanivshellbe.git /opt/money-machine
+  - python3 -m venv /opt/money-machine/.venv
+  - /opt/money-machine/.venv/bin/pip install --upgrade pip
+  - /opt/money-machine/.venv/bin/pip install -r /opt/money-machine/backend/requirements.txt
+  - cp /root/mm-secrets.env /opt/money-machine/backend/config/settings.env
+  - shred -u /root/mm-secrets.env
+  - cp /opt/money-machine/deploy/money-machine-orchestrator.service /etc/systemd/system/
+  - cp /opt/money-machine/deploy/money-machine-dream.service /etc/systemd/system/
+  - cp /opt/money-machine/deploy/money-machine-dream.timer /etc/systemd/system/
+  - cp /opt/money-machine/deploy/nginx-dashboard.conf /etc/nginx/sites-available/money-machine
+  - ln -sf /etc/nginx/sites-available/money-machine /etc/nginx/sites-enabled/money-machine
+  - rm -f /etc/nginx/sites-enabled/default
+  - chown -R money:money /opt/money-machine
+  - chmod 600 /opt/money-machine/backend/config/settings.env
+  - systemctl daemon-reload
+  - nginx -t && systemctl restart nginx
+  - ufw allow OpenSSH
+  - ufw allow 80/tcp
+  - ufw --force enable
+  - systemctl enable --now fail2ban
+  - systemctl enable --now money-machine-dream.timer
+  - systemctl enable --now money-machine-orchestrator
