@@ -46,7 +46,7 @@ runcmd:
   - swapon /swapfile
   - echo '/swapfile none swap sw 0 0' >> /etc/fstab
   - systemctl enable --now chrony
-  - id -u money &>/dev/null || useradd --system --create-home --shell /usr/sbin/nologin money
+  - id -u money >/dev/null 2>&1 || useradd --system --create-home --shell /usr/sbin/nologin money
   - git clone --branch claude/algo-trading-system-t3MC0 https://github.com/yanivshellbe/yanivshellbe.git /opt/money-machine
   - python3 -m venv /opt/money-machine/.venv
   - /opt/money-machine/.venv/bin/pip install --upgrade pip
