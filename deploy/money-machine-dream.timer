@@ -1,0 +1,9 @@
+[Unit]
+Description=Money Machine — run the nightly dream scan at 03:00 server time
+
+[Timer]
+OnCalendar=*-*-* 03:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

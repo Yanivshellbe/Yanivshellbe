@@ -1,0 +1,11 @@
+[Unit]
+Description=Money Machine — nightly dream scan (multi-analyst)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=money
+WorkingDirectory=/opt/money-machine/backend
+EnvironmentFile=/opt/money-machine/backend/config/settings.env
+ExecStart=/opt/money-machine/.venv/bin/python -m money_machine.cli dream

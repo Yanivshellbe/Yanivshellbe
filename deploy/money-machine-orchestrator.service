@@ -1,0 +1,17 @@
+[Unit]
+Description=Money Machine — orchestrator state refresh loop
+After=network-online.target chrony.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=money
+WorkingDirectory=/opt/money-machine/backend
+EnvironmentFile=/opt/money-machine/backend/config/settings.env
+# Refresh account snapshot + state.json every 30s.
+ExecStart=/bin/bash -c 'while true; do /opt/money-machine/.venv/bin/python -m money_machine.cli refresh-state; sleep 30; done'
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
