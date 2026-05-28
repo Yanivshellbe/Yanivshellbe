@@ -40,6 +40,11 @@ write_files:
       DRY_RUN=true
 
 runcmd:
+  - fallocate -l 2G /swapfile || dd if=/dev/zero of=/swapfile bs=1M count=2048
+  - chmod 600 /swapfile
+  - mkswap /swapfile
+  - swapon /swapfile
+  - echo '/swapfile none swap sw 0 0' >> /etc/fstab
   - systemctl enable --now chrony
   - id -u money &>/dev/null || useradd --system --create-home --shell /usr/sbin/nologin money
   - git clone --branch claude/algo-trading-system-t3MC0 https://github.com/yanivshellbe/yanivshellbe.git /opt/money-machine
